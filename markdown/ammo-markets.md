@@ -243,7 +243,7 @@ _safeTransferFrom(
 _swap(amounts, routes, address(this));
 ```
 
-For an CALIBER sell, the transfer is `user -> CALIBER/WAVAX pair`. Since `to` is the taxed pool, the pair receives only the net amount after sell tax, while the router still asks the pair to output the amount quoted for the gross input:
+For a CALIBER sell, the transfer is `user -> CALIBER/WAVAX pair`. Since `to` is the taxed pool, the pair receives only the net amount after sell tax, while the router still asks the pair to output the amount quoted for the gross input:
 
 ```text
 User input:   1,000 CALIBER
@@ -253,7 +253,7 @@ Router quote: output for 1,000 CALIBER
 Result:       swap can revert because output is too high for actual input
 ```
 
-For an CALIBER buy, the output transfer is `CALIBER/WAVAX pair -> user`. Since `from` is the taxed pool, the user receives the net amount after buy tax. The normal router path can satisfy `amountOutMin` against the pre-tax quoted amount while the user receives less than their intended minimum:
+For a CALIBER buy, the output transfer is `CALIBER/WAVAX pair -> user`. Since `from` is the taxed pool, the user receives the net amount after buy tax. The normal router path can satisfy `amountOutMin` against the pre-tax quoted amount while the user receives less than their intended minimum:
 
 ```text
 Router quote:  1,000 CALIBER
@@ -285,7 +285,7 @@ This is why AmmoLiquidityManager exists, but it also means normal Pharaoh liquid
 
 #### Recommendation
 
-- Provide an CALIBER-specific swap adapter or frontend integration that always uses supporting fee-on-transfer router functions for CALIBER routes.
+- Provide a CALIBER-specific swap adapter or frontend integration that always uses supporting fee-on-transfer router functions for CALIBER routes.
 - Keep direct Pharaoh liquidity adds disabled or route users through `AmmoLiquidityManager` or a tax-aware liquidity wrapper.
 
 **Ammo:** Acknowledged. Pharaoh router tax incompatibility is treated as acceptable integration behavior; users should use `AmmoLiquidityManager`. The team also intends to use its own router by forking Pharaoh's router/pair setup and using fee-on-transfer-supporting functions for taxed-pool swaps.
